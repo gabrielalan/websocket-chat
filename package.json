@@ -5,11 +5,14 @@
   "author": "Gabriel Alan Pereira",
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^4.0.0-beta.2",
     "express": "^4.16.2",
-    "socket.io": "^2.0.4",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-scripts": "1.0.17"
+    "react-redux": "^5.0.6",
+    "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
+    "socket.io": "^2.0.4"
   },
   "scripts": {
     "start": "npm run build && npm run server",

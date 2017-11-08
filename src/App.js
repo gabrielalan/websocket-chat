@@ -1,42 +1,45 @@
-import React, { Component } from 'react';
-import io from 'socket.io-client';
+import React  from 'react';
+import { connect } from 'react-redux';
+import Enter from './containers/Enter';
+import Chat from './containers/Chat';
+import Header from './components/Header';
 import './App.css';
 
-const socket = io('http://localhost:3001');
+const Structure = ({ isLogged, active }) => {
+	const container = (
+		<div className="rooms-ct">
+			<div className="rooms">
+				<h1>Wow chat</h1>
+				<p>Active users: <span className="badge-primary badge-pill">{active}</span></p>
+				<ul className="nav nav-pills flex-column">
+					<li className="nav-item"><a className="nav-link active" href="#general">General</a></li>
+					<li className="nav-item"><a className="nav-link" href="#1">Room #1</a></li>
+					<li className="nav-item"><a className="nav-link" href="#2">Room #2</a></li>
+					<li className="nav-item"><a className="nav-link" href="#3">Room #3</a></li>
+					<li className="nav-item"><a className="nav-link" href="#4">Room #4</a></li>
+				</ul>
+			</div>
+			<div className="chat-container">
+				<Header active={active}/>
+				<Chat/>
+			</div>
+		</div>
+	);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+	const show = !isLogged ? <Enter/> : container;
 
-    this.state = { value: '' };
+	return (
+		<div className="app">{show}</div>
+	);
+};
 
-    socket.on('new.message', data => {
-      console.log(data);
-    });
-  }
+const mapStateToProps = state => ({
+	isLogged: !!state.users.current,
+	active: state.users.active,
+});
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
+const mapDispatchToProps = () => ({});
 
-  submit() {
-    console.log(`emmiting: ${this.state.value}`);
-    socket.emit('new.message', this.state.value);
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to the chat</h1>
-          <form action="#" onSubmit={this.submit.bind(this)}>
-            <input type="text" value={this.state.value} onChange={this.handleChange.bind(this)} />
-            <button type="submit">go</button>
-          </form>
-        </header>
-      </div>
-    );
-  }
-}
+const App = connect(mapStateToProps, mapDispatchToProps)(Structure);
 
 export default App;
