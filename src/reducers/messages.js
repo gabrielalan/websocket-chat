@@ -30,7 +30,7 @@ const messages = (state = initial, action) => {
 			const nextState = action.data.rooms ? updateRooms(state, action.data.rooms) : state;
 
 			return Object.assign({}, nextState, {
-				active: action.data.active
+				active: action.data.active || state.active
 			});
 
 		case 'NEW_MESSAGE':

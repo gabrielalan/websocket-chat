@@ -2,7 +2,11 @@ import io from 'socket.io-client';
 import { newUser, disconnect } from '../actions/users';
 import { newMessage, activeRoom } from '../actions/messages';
 
-const socket = io('http://localhost:3001');
+const hostname = window.location.hostname;
+
+const port = 3001;
+
+const socket = io(`ws://${hostname}:${port}`, {transports: ['websocket']});
 
 /**
  * Message event (bidirectional)

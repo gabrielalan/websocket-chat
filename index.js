@@ -21,9 +21,11 @@ const NEW_MESSAGE = 'new.message';
 // Chat
 io.on('connection', socket => {
 	const commands = {
-		'/enter': room => {
+		'/enter': (...args) => {
+			const room = args.join(' ');
 			rooms.push(room);
 			socket.emit('active.room', { active: room, rooms });
+			socket.broadcast.emit('active.room', { rooms });
 			console.log(`Entering room ${room} - ${JSON.stringify(rooms)}`);
 		}
 	};
