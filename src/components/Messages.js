@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 
 const Message = (item, key) => {
@@ -18,15 +18,21 @@ const Message = (item, key) => {
 	);
 };
 
-const Messages = ({ messages }) => (
-	<div className="messages">
-		<table className="table table-striped">
-			<tbody>
-			{messages.map(Message)}
-			</tbody>
-		</table>
-	</div>
-);
+class Messages extends Component {
+	componentDidUpdate() {
+		this.container.scrollTop = this.container.scrollHeight;
+	}
+
+	render() {
+		return <div className="messages" ref={node => this.container = node}>
+			<table className="table table-striped">
+				<tbody>
+				{this.props.messages.map(Message)}
+				</tbody>
+			</table>
+		</div>;
+	}
+}
 
 Messages.propTypes = {
 	messages: PropTypes.arrayOf(

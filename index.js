@@ -16,25 +16,57 @@ let active = 0;
 
 // Chat
 io.on('connection', socket => {
-	const newUserMessage = username => ({
-		username: 'system',
-		message: `New user entered the chat: ${username}`
+	const NEW_MESSAGE = 'new.message';
+
+	const systemMessage = message => {
+		const data = {
+			username: 'system',
+			message: message
+		};
+
+		socket.emit(NEW_MESSAGE, data);
+		socket.broadcast.emit(NEW_MESSAGE, data);
+	};
+
+	/**
+	 * Listener for new messages
+	 */
+	socket.on(NEW_MESSAGE, data => {
+		console.log(`${NEW_MESSAGE}: ${JSON.stringify(data)}`);
+		socket.emit(NEW_MESSAGE, data);
+		socket.broadcast.emit(NEW_MESSAGE, data);
 	});
 
-	socket.on('new.message', data => {
-		console.log(`new.message: ${JSON.stringify(data)}`);
-		socket.emit('new.message', data);
-		socket.broadcast.emit('new.message', data);
+	/**
+	 * Listener for disconnection/left
+	 */
+	socket.on('user.left', data => {
+		if (!data || !data.username) {
+			return;
+		}
+
+		console.log(`user.left: ${JSON.stringify(data)}`);
+
+		active--;
+
+		socket.broadcast.emit('user.left', {
+			username: data.username,
+			active
+		});
+
+		systemMessage(`${data.username} left!`);
 	});
 
+	/**
+	 * Listener for new users
+	 */
 	socket.on('new.user', username => {
 		active++;
 
 		socket.emit('new.user', { active });
 		socket.broadcast.emit('new.user', { active });
 
-		socket.emit('new.message', newUserMessage(username));
-		socket.broadcast.emit('new.message', newUserMessage(username));
+		systemMessage(`New user entered the chat: ${username}`);
 
 		console.log(`new.user: ${username} - ${active}`);
 	});

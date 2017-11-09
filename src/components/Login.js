@@ -10,6 +10,11 @@ class Login extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
+
+		if (!this.state.username) {
+			return false;
+		}
+
 		this.props.onSubmit(Object.assign({}, this.state));
 	}
 

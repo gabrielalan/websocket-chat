@@ -8,3 +8,8 @@ export const newUser = data => ({
 	type: 'NEW_USER',
 	data
 });
+
+export const disconnect = data => ({
+	type: 'DISCONNECT',
+	data
+});

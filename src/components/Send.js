@@ -10,7 +10,13 @@ class Send extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
+
+		if (!this.state.message) {
+			return false;
+		}
+
 		this.props.onSubmit(this.state.message);
+		this.setState({ message: '' });
 	}
 
 	handleChange(event) {
@@ -27,7 +33,7 @@ class Send extends Component {
 									 value={this.state.message}
 									 onChange={this.handleChange.bind(this)}/>
 						<span className="input-group-btn">
-							<button className="btn btn-info btn-lg" type="submit">send</button>
+							<button className="btn btn-info btn-lg" type="submit" disabled={!this.state.message}>send</button>
 						</span>
 					</div>
 				</form>

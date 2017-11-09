@@ -6,6 +6,7 @@ const initial = {
 const users = (state = initial, action) => {
 	switch (action.type) {
 		case 'NEW_USER':
+		case 'DISCONNECT':
 			return Object.assign({}, state, {
 				active: action.data.active
 			});
