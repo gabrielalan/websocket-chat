@@ -1,44 +1,31 @@
-import React  from 'react';
 import { connect } from 'react-redux';
-import Enter from './containers/Enter';
-import Chat from './containers/Chat';
-import Header from './components/Header';
+import { activeRoom } from './actions/messages';
+import Structure from './components/AppStructure';
 import './App.css';
 
-const Structure = ({ isLogged, active }) => {
-	const container = (
-		<div className="rooms-ct">
-			<div className="rooms">
-				<h1>Wow chat</h1>
-				<p>Active users: <span className="badge-primary badge-pill">{active}</span></p>
-				<ul className="nav nav-pills flex-column">
-					<li className="nav-item"><a className="nav-link active" href="#general">General</a></li>
-					<li className="nav-item"><a className="nav-link" href="#1">Room #1</a></li>
-					<li className="nav-item"><a className="nav-link" href="#2">Room #2</a></li>
-					<li className="nav-item"><a className="nav-link" href="#3">Room #3</a></li>
-					<li className="nav-item"><a className="nav-link" href="#4">Room #4</a></li>
-				</ul>
-			</div>
-			<div className="chat-container">
-				<Header active={active}/>
-				<Chat/>
-			</div>
-		</div>
-	);
+const getRooms = state => {
+	const rooms = [];
 
-	const show = !isLogged ? <Enter/> : container;
+	for(let key in state) {
+		if (key === 'active') {
+			continue;
+		}
 
-	return (
-		<div className="app">{show}</div>
-	);
+		rooms.push(key);
+	}
+
+	return { rooms, active: state.active };
 };
 
 const mapStateToProps = state => ({
 	isLogged: !!state.users.current,
 	active: state.users.active,
+	rooms: getRooms(state.messages)
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+	onRoomSelect: active => dispatch(activeRoom({ active }))
+});
 
 const App = connect(mapStateToProps, mapDispatchToProps)(Structure);
 

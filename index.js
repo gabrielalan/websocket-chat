@@ -14,12 +14,15 @@ app.use(express.static(path.join(__dirname, 'build')));
 // Active users
 let active = 0;
 
+const rooms = ['General', 'Room #1'];
+
 // Chat
 io.on('connection', socket => {
 	const NEW_MESSAGE = 'new.message';
 
 	const systemMessage = message => {
 		const data = {
+			room: rooms[0],
 			username: 'system',
 			message: message
 		};
@@ -63,8 +66,8 @@ io.on('connection', socket => {
 	socket.on('new.user', username => {
 		active++;
 
-		socket.emit('new.user', { active });
-		socket.broadcast.emit('new.user', { active });
+		socket.emit('new.user', { active, rooms });
+		socket.broadcast.emit('new.user', { active, rooms });
 
 		systemMessage(`New user entered the chat: ${username}`);
 

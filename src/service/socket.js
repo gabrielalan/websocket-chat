@@ -58,7 +58,7 @@ export default {
 		socket.emit(NEW_USER, username);
 	},
 
-  sendMessage(username, message) {
-    socket.emit(NEW_MESSAGE, { username, message });
+  sendMessage(username, message, room) {
+    socket.emit(NEW_MESSAGE, { username, message, room });
   }
 };
