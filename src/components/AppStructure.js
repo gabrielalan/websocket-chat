@@ -8,7 +8,7 @@ const AppStructure = ({ isLogged, active, rooms, onRoomSelect }) => {
 	const container = (
 		<div className="rooms-ct">
 			<div className="rooms">
-				<h1>Wow chat</h1>
+				<h1>Xat</h1>
 				<p>Active users: <span className="badge-primary badge-pill">{active}</span></p>
 				<Rooms rooms={rooms.rooms} active={rooms.active} onSelect={onRoomSelect}/>
 			</div>

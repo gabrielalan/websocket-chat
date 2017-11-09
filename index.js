@@ -16,13 +16,21 @@ let active = 0;
 
 const rooms = ['General', 'Room #1'];
 
+const NEW_MESSAGE = 'new.message';
+
 // Chat
 io.on('connection', socket => {
-	const NEW_MESSAGE = 'new.message';
+	const commands = {
+		'/enter': room => {
+			rooms.push(room);
+			socket.emit('active.room', { active: room, rooms });
+			console.log(`Entering room ${room} - ${JSON.stringify(rooms)}`);
+		}
+	};
 
-	const systemMessage = message => {
+	const systemMessage = (message, room = rooms[0]) => {
 		const data = {
-			room: rooms[0],
+			room,
 			username: 'system',
 			message: message
 		};
@@ -31,11 +39,29 @@ io.on('connection', socket => {
 		socket.broadcast.emit(NEW_MESSAGE, data);
 	};
 
+	const runCommand = ({ message, room }) => {
+		const args = message.split(' ');
+		const command = args.shift();
+
+		if (!(command in commands)) {
+			return systemMessage(`Command ${command} doesn't exists, \ncome on!`, room);
+		}
+
+		console.log(`Executing command: ${command} with ${JSON.stringify(args)}`);
+
+		return commands[command].apply(null, args);
+ 	};
+
 	/**
 	 * Listener for new messages
 	 */
 	socket.on(NEW_MESSAGE, data => {
 		console.log(`${NEW_MESSAGE}: ${JSON.stringify(data)}`);
+
+		if (data.message.charAt(0) === '/') {
+			return runCommand(data);
+		}
+
 		socket.emit(NEW_MESSAGE, data);
 		socket.broadcast.emit(NEW_MESSAGE, data);
 	});
