@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "npm run build && npm run server",
-    "server": "node index.js",
+    "server": "node server/index.js",
     "build": "react-scripts build",
     "dev": "react-scripts start",
     "test": "react-scripts test --env=jsdom",

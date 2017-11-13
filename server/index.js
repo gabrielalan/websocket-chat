@@ -9,7 +9,7 @@ const port = 3001;
 server.listen(port, () => console.log(`Listening on *:${port}`));
 
 // Routing
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '../build')));
 
 // Active users
 let active = 0;
