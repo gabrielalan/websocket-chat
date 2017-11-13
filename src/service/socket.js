@@ -39,7 +39,7 @@ export default {
 		socket.on(NEW_MESSAGE, maybe(logged, onNewMessage));
 		socket.on(ACTIVE_ROOM, maybe(logged, onActiveRoom));
 
-		window.addEventListener('beforeunload', (e) => {
+		window.addEventListener('beforeunload', () => {
 			const username = store.getState().users.current;
 
 			socket.emit(USER_LEFT, { username });
