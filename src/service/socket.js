@@ -1,32 +1,13 @@
 import io from 'socket.io-client';
 import { newUser, disconnect } from '../actions/users';
 import { newMessage, activeRoom } from '../actions/messages';
+import { NEW_MESSAGE, NEW_USER, ACTIVE_ROOM, USER_LEFT } from 'websocket-chat-server/constants';
 
 const hostname = window.location.hostname;
 
 const port = 3001;
 
 const socket = io(`ws://${hostname}:${port}`, {transports: ['websocket']});
-
-/**
- * Message event (bidirectional)
- */
-export const NEW_MESSAGE = 'new.message';
-
-/**
- * When some other user enters on the chat (not bidirectional)
- */
-export const NEW_USER = 'new.user';
-
-/**
- * When users close chat
- */
-export const USER_LEFT = 'user.left';
-
-/**
- * When a room is remotely activated
- */
-export const ACTIVE_ROOM = 'active.room';
 
 /**
  * Check if there is a user logged

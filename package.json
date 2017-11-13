@@ -12,11 +12,12 @@
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "websocket-chat-server": "github:gabrielalan/websocket-chat-server#master"
   },
   "scripts": {
     "start": "npm run build && npm run server",
-    "server": "node server/index.js ./build",
+    "server": "node node_modules/websocket-chat-server/index.js ./build",
     "build": "react-scripts build",
     "dev": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
